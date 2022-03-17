@@ -21,7 +21,7 @@
 ; !define MUI_UNICON "..\${APP_NAME}\Icon.ico"
 
 !define VERSION "0.0.1.0"
-!define APP_NAME "TaskTimer"
+!define APP_NAME "DicomOutliner"
 !getdllversion "..\${APP_NAME}\${APP_NAME}.exe" ver
 
 VIProductVersion "${VERSION}"
