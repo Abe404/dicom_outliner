@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import os
 import shutil
+
 from os.path import join
 
 def fix_app():
@@ -50,6 +51,14 @@ def fix_app():
     tif_target = join(build_dir, 'skimage/io/_plugins/tifffile_plugin.py')
     print('copying', tif_target)
     shutil.copyfile(tif_src, tif_target)
+
+    src = join(site_packages_dir, 'pydicom')
+    target = join(build_dir, 'pydicom')
+    print('copying', src, 'to', target)
+    shutil.copytree(src, target)
+
+
+    # copy pydicom
 
     for dir_name in ['filters', 'metrics', 'segmentation', 'restoration']:
         if not os.path.isdir(os.path.join(build_dir, 'skimage', dir_name)):
