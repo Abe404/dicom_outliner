@@ -9,7 +9,10 @@ def get_mask(patient, struct_name):
     return  mask
 
 def add_outline_to_dicom(in_dicom_dir, struct_name, patient, dicom_output_dir):
-    uid = pydicom.uid.generate_uid() # a new id is created to help solve import problems
+    # new ids are created to help solve import problems
+    series_instance_uid = pydicom.uid.generate_uid() 
+    study_instance_uid = pydicom.uid.generate_uid() 
+    frame_of_reference_uid = pydicom.uid.generate_uid() 
 
     struct_np_image_outline = None 
     struct_np_image = get_mask(patient, struct_name)
@@ -24,7 +27,9 @@ def add_outline_to_dicom(in_dicom_dir, struct_name, patient, dicom_output_dir):
 
     for i, dicom_fname in enumerate(dicom_slices):
         dicom_slice = pydicom.dcmread(os.path.join(in_dicom_dir, dicom_fname))
-        dicom_slice.SeriesInstanceUID = uid
+        dicom_slice.SeriesInstanceUID = series_instance_uid
+        dicom_slice.StudyInstanceUID = study_instance_uid
+        dicom_slice.FrameOfReferenceUID = frame_of_reference_uid
         dicom_slice.SeriesDescription = struct_name
         struct_slice = struct_np_image_outline[i]
         np_pixel_array = dicom_slice.pixel_array
