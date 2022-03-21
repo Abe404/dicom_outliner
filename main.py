@@ -19,7 +19,8 @@ from PyQt5 import QtCore
 from PyQt5 import QtGui
 import glob
 from dicom_mask.convert import load_patient
-from dicom_outliner import export_outline
+from dicom_outliner import ExtractProgressWidget
+
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -32,7 +33,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def export_dicom(self):
         print('export files now. struct name = ', self.struct_name, 'source_dicom_dir = ',
               self.source_dicom_dir, 'output directory = ', self.output_dicom_dir)
-        export_outline(self.source_dicom_dir, self.struct_name, self.patient, self.output_dicom_dir)
+        self.progress_widget = ExtractProgressWidget(self.struct_name)
+        self.progress_widget.show()
+        self.progress_widget.run(self.source_dicom_dir, self.struct_name, self.patient, self.output_dicom_dir)
         self.info_label.setText('Outline dicom exported to ' + self.output_dicom_dir)
 
     def add_export_button(self):
@@ -58,6 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
         specify_input_dicom_dir_btn = QtWidgets.QPushButton('Specify source dicom directory')
         specify_input_dicom_dir_btn.clicked.connect(self.select_input_dicom_dir)
         self.layout.addWidget(specify_input_dicom_dir_btn)
+
 
     def add_select_output_directory_button(self):
         # Add specify image directory button
