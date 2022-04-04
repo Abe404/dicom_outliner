@@ -54,8 +54,11 @@ class Thread(QtCore.QThread):
             dicom_slice = pydicom.dcmread(os.path.join(self.in_dicom_dir, dicom_fname))
             dicom_slice.SeriesInstanceUID = series_instance_uid
             dicom_slice.StudyInstanceUID = study_instance_uid
+            # each slice has it's own SOPInstanceUID
+            dicom_slice.SOPInstanceUID = pydicom.uid.generate_uid() 
             dicom_slice.FrameOfReferenceUID = frame_of_reference_uid
             dicom_slice.SeriesDescription = self.struct_name
+            dicom_slice.StudyID = self.struct_name
             struct_slice = struct_np_image_outline[i]
             np_pixel_array = dicom_slice.pixel_array
             np_pixel_array[struct_slice > 0] = 3000 # upper end of bone HU value 
